@@ -1,37 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Exigência Módulo 3: ScrollView para proteger a tela contra o teclado -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center">
+    android:fillViewport="true">
 
-    <!-- O número do Timer em destaque -->
-    <TextView
-        android:id="@+id/tvTimer"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:text="25:00"
-        android:textColor="@color/white"
-        android:textSize="80sp"
-        android:textStyle="bold" />
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="24dp">
 
-    <!-- Botão de ação do timer -->
-    <Button
-        android:id="@+id/btnIniciar"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/white"
-        android:text="Iniciar" />
+        <!-- O número do Timer original com o estilo que você escolheu -->
+        <TextView
+            android:id="@+id/tvTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:text="25:00"
+            android:textColor="@color/white"
+            android:textSize="80sp"
+            android:textStyle="bold" />
 
-    <!-- Botão de Ajuda que vai abrir a caixinha de diálogo -->
-    <Button
-        android:id="@+id/btnAjuda"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Como usar?"
-        android:backgroundTint="#999999"
-        android:textSize="12sp" />
+        <!-- Exigência Módulo 3: EditText customizado para manter a paleta escura -->
+        <EditText
+            android:id="@+id/etCustomTime"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Minutos (ex: 15)"
+            android:textColorHint="#888888"
+            android:textColor="@color/white"
+            android:inputType="number"
+            android:textAlignment="center"
+            android:backgroundTint="@color/white" />
 
-</LinearLayout>
+        <!-- Exigência Módulo 3: Botão para resgatar o valor digitado -->
+        <Button
+            android:id="@+id/btnAplicarTempo"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:backgroundTint="#444444"
+            android:textColor="@color/white"
+            android:text="Definir Tempo" />
+
+        <!-- Seu botão original de ação -->
+        <Button
+            android:id="@+id/btnIniciar"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/white"
+            android:textColor="#000000"
+            android:text="Iniciar" />
+
+        <!-- Seu botão original de Ajuda -->
+        <Button
+            android:id="@+id/btnAjuda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#999999"
+            android:text="Como usar?"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+</ScrollView>

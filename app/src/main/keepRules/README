@@ -283,7 +283,17 @@ O ciclo de vida foi mapeado através do Logcat na `MainActivity` para garantir a
 
 ### Módulo 3
 
-- Interface gráfica
+Nesta etapa, o Minimal Timer ganhou interatividade direta com o usuário através de capturas de dados, validações e melhorias de usabilidade na interface, preservando a identidade visual minimalista:
+
+### 1. Entrada e Recuperação de Dados (EditText)
+* **Componente de Entrada:** Adicionado o campo `etCustomTime` configurado com `android:inputType="number"`, o que restringe a entrada do usuário apenas a caracteres numéricos inteiros.
+* **Recuperação de Valores:** Implementada a lógica no Kotlin para extrair o valor string digitado e convertê-lo com segurança para o formato numérico (`toInt()`).
+
+### 2. Tratamento de Eventos de Clique (Listeners)
+* Configuração do listener `btnAplicarTempo.setOnClickListener` para interceptar a ação do usuário, realizar validações de consistência de dados (impedindo campos vazios ou intervalos inválidos) e atualizar dinamicamente o contador principal (`tvTimer`).
+
+### 3. Responsividade de Layout (ScrollView)
+* Implementação do componente estrutural `ScrollView` envolvendo o contêiner principal do fragment. Isso garante a perfeita rolagem vertical e adaptabilidade do layout caso o teclado virtual do dispositivo se sobreponha aos elementos de tela, eliminando falhas de quebra de interface (viewport clipping).
 
 
 ### Módulo 4
