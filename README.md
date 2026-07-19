@@ -167,8 +167,28 @@ Salvar
 - Criação do repositório
 - Elaboração do README
 
+
 ### Módulo 2
 - Estrutura inicial do aplicativo
+
+Nesta etapa, a arquitetura base do Minimal Timer foi estruturada utilizando componentes fundamentais do ecossistema Android para garantir performance e modularidade:
+
+### 1. Navegação e Passagem de Dados (Activities & Intents)
+* **MainActivity:** Tela principal que gerencia o fluxo de execução do timer.
+* **SettingsActivity:** Tela de configurações do aplicativo.
+* **Intents:** A transição entre telas é feita via `Intent` explícita, enviando parâmetros do estado atual do timer por meio de `extras` (`putExtra`).
+
+### 2. Interface Modular (Fragments Dinâmicos)
+* O Timer e os botões de ação rápida foram encapsulados no `TimerFragment`.
+* A renderização é realizada de forma **dinâmica** dentro do contêiner da `MainActivity` usando o `supportFragmentManager`, preparando o app para futuras adaptações de layout.
+
+### 3. Interação com o Usuário e Estilos
+* **AlertDialog:** Implementado balão informativo com instruções de uso rápidas sem desviar o foco da aplicação.
+* **Temas:** Customização aplicada via `themes.xml` herdando de `Theme.Material3.DayNight.NoActionBar` para remover a barra de títulos padrão, mantendo a estética limpa e minimalista proposta.
+
+### 4. Ciclo de Vida do Android
+O ciclo de vida foi mapeado através do Logcat na `MainActivity` para garantir a correta persistência do tempo e gerenciamento de memória.
+
 
 ### Módulo 3
 - Interface gráfica
