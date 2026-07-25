@@ -205,7 +205,18 @@ Nesta etapa, o Minimal Timer ganhou interatividade direta com o usuário atravé
 
 
 ### Módulo 4
-- Implementação do timer
+Nesta etapa, o Minimal Timer recebeu melhorias visuais e de navegação, aplicando conceitos avançados de componentes de interface e organização de código:
+
+* **Componentes Visuais Avançados:** 
+    * **GridView:** Implementação de uma galeria de temas/ícones para personalização.
+    * **ImageSwitcher:** Navegação entre imagens com transições suaves.
+    * **ImageView:** Exibição dinâmica de ícones e elementos visuais.
+    * **WebView:** Central de ajuda integrada carregando documentação externa.
+* **Menus e Interação:**
+    * **Options Menu:** Menu global para navegação rápida entre Galeria, Configurações e Ajuda.
+    * **Context Menu:** Ações rápidas acionadas por clique longo no Timer (Reiniciar/Copiar).
+* **Organização de Código:**
+    * **HelperMethods:** Centralização de funções utilitárias (formatação de tempo e Toasts) para evitar repetição e facilitar a manutenção.
 
 ### Módulo 5
 - Configurações

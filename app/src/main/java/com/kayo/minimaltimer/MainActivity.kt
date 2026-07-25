@@ -3,6 +3,8 @@ package com.kayo.minimaltimer
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
@@ -61,5 +63,34 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG_CICLO, "onDestroy: O aplicativo foi fechado/destruído.")
+    }
+
+    // MÓDULO 4: Criação do Menu de Opções (Ações Globais)
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_gallery -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, GalleryFragment())
+                    .addToBackStack(null)
+                    .commit()
+                true
+            }
+            R.id.menu_settings -> {
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_help -> {
+                val intent = Intent(this, HelpWebViewActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

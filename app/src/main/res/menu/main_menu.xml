@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- MÓDULO 4: Menu de opções (ações globais) -->
+    <item
+        android:id="@+id/menu_gallery"
+        android:title="Galeria de Temas"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_settings"
+        android:title="Configurações"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_help"
+        android:title="Ajuda Online"
+        app:showAsAction="never" />
+</menu>
