@@ -1,0 +1,4 @@
+Minimal Timer - Versão 1.0
+Desenvolvido para máxima produtividade.
+Módulo 5: Persistência de Dados implementada com sucesso!
+Este arquivo está sendo lido da pasta res/raw.

@@ -219,7 +219,17 @@ Nesta etapa, o Minimal Timer recebeu melhorias visuais e de navegação, aplican
     * **HelperMethods:** Centralização de funções utilitárias (formatação de tempo e Toasts) para evitar repetição e facilitar a manutenção.
 
 ### Módulo 5
-- Configurações
+Nesta etapa, o Minimal Timer implementou diversas formas de persistência de dados, garantindo que as informações do usuário e o histórico de uso sejam preservados:
+
+*   **SharedPreferences**: Armazenamento de preferências simples, como o tempo padrão do timer, permitindo que o app inicie com a configuração desejada pelo usuário.
+*   **Armazenamento Interno (Internal Storage)**: 
+    *   Uso de `FileOutputStream` para gravar logs de uso do aplicativo em arquivos privados.
+    *   Uso de `FileInputStream` e `InputStreamReader` para leitura e exibição desses logs.
+*   **Armazenamento Externo (External Storage)**: Implementação de backup de dados utilizando `getExternalFilesDir`, garantindo compatibilidade com versões modernas do Android.
+*   **Recursos Raw**: Leitura de informações estáticas (como créditos ou ajuda) diretamente da pasta `res/raw` utilizando `openRawResource`.
+*   **Banco de Dados SQLite**: 
+    *   Criação da classe `DatabaseHelper` (extendendo `SQLiteOpenHelper`).
+    *   Persistência do histórico de sessões completas do timer, permitindo a visualização de atividades passadas.
 
 ### Módulo 6
 - Notificações e melhorias

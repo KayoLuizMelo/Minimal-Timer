@@ -1,25 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="24dp">
+    android:fillViewport="true">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Configurações"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="24dp"/>
+        android:orientation="vertical"
+        android:padding="24dp">
 
-    <!-- Este texto vai mudar dinamicamente com o dado que receberemos da primeira tela -->
-    <TextView
-        android:id="@+id/tvDadosRecebidos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Aguardando dados..."
-        android:textSize="16sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MÓDULO 5: Configurações e Persistência"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tvDadosRecebidos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aguardando dados..."
+            android:layout_marginBottom="16dp" />
+
+        <!-- SharedPreferences Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preferências (SharedPreferences)"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/etDefaultTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tempo padrão (minutos)"
+            android:inputType="number"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/btnSavePrefs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Salvar Preferências"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Internal/External Storage Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Arquivos (Interno/Externo)"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/btnSaveInternal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gravar Log Interno (FileOutputStream)"/>
+
+        <Button
+            android:id="@+id/btnReadInternal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ler Log Interno (FileInputStream)"/>
+
+        <Button
+            android:id="@+id/btnSaveExternal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gravar Backup Externo (External)"/>
+
+        <Button
+            android:id="@+id/btnReadRaw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ler Recurso Raw (openRawResource)"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- SQLite Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Banco de Dados (SQLite)"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/btnViewHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ver Histórico de Sessões"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvHistoryDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Histórico aparecerá aqui..."
+            android:padding="8dp"
+            android:background="#f0f0f0" />
+
+    </LinearLayout>
+</ScrollView>

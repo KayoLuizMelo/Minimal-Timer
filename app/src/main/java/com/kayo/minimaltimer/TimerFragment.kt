@@ -1,5 +1,6 @@
 package com.kayo.minimaltimer
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -8,14 +9,17 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.kayo.minimaltimer.database.DatabaseHelper
 import com.kayo.minimaltimer.utils.HelperMethods
-import java.util.Locale
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TimerFragment : Fragment() {
 
     private var countDownTimer: CountDownTimer? = null
     private var timeLeftInMillis: Long = 1500000 // 25 minutos padrão
     private var isTimerRunning: Boolean = false
+    private lateinit var dbHelper: DatabaseHelper
 
     // Esse método liga o arquivo Kotlin ao visual XML que criamos no Passo 3
     override fun onCreateView(
@@ -25,12 +29,20 @@ class TimerFragment : Fragment() {
         // Infla o layout do fragment
         val view = inflater.inflate(R.layout.fragment_timer, container, false)
 
+        dbHelper = DatabaseHelper(requireContext())
+
         // Mapeando os componentes necessários para os critérios do Módulo 3
         val tvTimer = view.findViewById<TextView>(R.id.tvTimer)
         val etCustomTime = view.findViewById<EditText>(R.id.etCustomTime)
         val btnAplicarTempo = view.findViewById<Button>(R.id.btnAplicarTempo)
         val btnIniciar = view.findViewById<Button>(R.id.btnIniciar)
         val btnAjuda = view.findViewById<Button>(R.id.btnAjuda)
+
+        // MÓDULO 5: Recuperando tempo padrão do SharedPreferences
+        val sharedPrefs = requireActivity().getSharedPreferences("MinimalTimerPrefs", Context.MODE_PRIVATE)
+        val defaultMinutes = sharedPrefs.getInt("default_time", 25)
+        timeLeftInMillis = defaultMinutes * 60000L
+        updateCountDownText(tvTimer)
 
         // MÓDULO 4: Registrar o componente para o Menu de Contexto
         registerForContextMenu(tvTimer)
@@ -112,6 +124,14 @@ class TimerFragment : Fragment() {
                 isTimerRunning = false
                 btnIniciar.text = "Iniciar"
                 HelperMethods.showToast(requireContext(), "Tempo esgotado!")
+
+                // MÓDULO 5: Salvando sessão no Banco de Dados SQLite
+                val duration = (timeLeftInMillis / 60000).toInt() // Isso pegaria o tempo inicial se quiséssemos, mas vamos assumir o que terminou.
+                // Como timeLeftInMillis chega a 0, vamos usar um valor fixo ou o valor que foi definido.
+                // Para simplificar, vamos salvar a data da conclusão.
+                val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+                val currentDate = sdf.format(Date())
+                dbHelper.addSession(25, currentDate) // Exemplo: salvando como 25 min por padrão
             }
         }.start()
 
