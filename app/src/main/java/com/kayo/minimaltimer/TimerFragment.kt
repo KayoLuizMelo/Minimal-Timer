@@ -1,13 +1,18 @@
 package com.kayo.minimaltimer
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.*
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import com.kayo.minimaltimer.database.DatabaseHelper
 import com.kayo.minimaltimer.utils.HelperMethods
@@ -21,6 +26,7 @@ class TimerFragment : Fragment() {
     private var initialTimeSet: Long = 1500000
     private var isTimerRunning: Boolean = false
     private lateinit var dbHelper: DatabaseHelper
+    private val TIMER_CHANNEL_ID = "TIMER_NOTIFICATION_CHANNEL"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -153,6 +159,7 @@ class TimerFragment : Fragment() {
                 isTimerRunning = false
                 btnIniciar.text = "Iniciar"
                 HelperMethods.showToast(requireContext(), "Tempo esgotado!")
+                sendTimerFinishedNotification()
 
                 val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
                 val currentDate = sdf.format(Date())
@@ -175,6 +182,39 @@ class TimerFragment : Fragment() {
         val minutes = (timeLeftInMillis / 1000).toInt() / 60
         val seconds = (timeLeftInMillis / 1000).toInt() % 60
         tvTimer?.text = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
+    }
+
+    private fun sendTimerFinishedNotification() {
+        createNotificationChannel()
+
+        val builder = NotificationCompat.Builder(requireContext(), TIMER_CHANNEL_ID)
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setContentTitle("Minimal Timer")
+            .setContentText("O tempo esgotou!")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+
+        with(NotificationManagerCompat.from(requireContext())) {
+            try {
+                notify(1001, builder.build())
+            } catch (e: SecurityException) {
+                // Silently fail if permission not granted
+            }
+        }
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Notificações do Timer"
+            val descriptionText = "Avisa quando o tempo do timer chega a zero"
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel(TIMER_CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+            val notificationManager: NotificationManager =
+                requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 
     override fun onDestroyView() {
