@@ -232,7 +232,13 @@ Nesta etapa, o Minimal Timer implementou diversas formas de persistência de dad
     *   Persistência do histórico de sessões completas do timer, permitindo a visualização de atividades passadas.
 
 ### Módulo 6
-- Notificações e melhorias
+Nesta etapa, o Minimal Timer expandiu suas capacidades de interação, permitindo a comunicação direta através de serviços nativos de SMS e E-mail:
+
+*   **Envio de SMS Direto**: Integração com o `SmsManager` para disparar mensagens de texto sem sair do aplicativo (requer permissão em tempo de execução).
+*   **Envio de SMS via Intent**: Uso de `Intent.ACTION_VIEW` para abrir o aplicativo de mensagens padrão do sistema com campos pré-preenchidos.
+*   **Recebimento de SMS**: Implementação de um `BroadcastReceiver` (`SmsReceiver`) que intercepta mensagens recebidas e exibe notificações no sistema.
+*   **Envio de E-mail**: Integração com aplicativos de e-mail do dispositivo através de `Intent.ACTION_SENDTO`, facilitando o suporte e feedback do usuário.
+*   **Segurança e Permissões**: Gerenciamento de permissões críticas (`SEND_SMS`, `RECEIVE_SMS`, `POST_NOTIFICATIONS`) seguindo as boas práticas do Android moderno.
 
 ### Módulo 7
 - Testes

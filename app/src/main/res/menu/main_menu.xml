@@ -14,4 +14,8 @@
         android:id="@+id/menu_help"
         android:title="Ajuda Online"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_contact"
+        android:title="Comunicação/Contato"
+        app:showAsAction="never" />
 </menu>
