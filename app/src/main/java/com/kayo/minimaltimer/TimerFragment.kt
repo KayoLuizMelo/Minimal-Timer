@@ -1,9 +1,11 @@
 package com.kayo.minimaltimer
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -187,11 +189,18 @@ class TimerFragment : Fragment() {
     private fun sendTimerFinishedNotification() {
         createNotificationChannel()
 
+        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val vibrationPattern = longArrayOf(0, 500, 200, 500)
+
         val builder = NotificationCompat.Builder(requireContext(), TIMER_CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentTitle("Minimal Timer")
             .setContentText("O tempo esgotou!")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
+            .setSound(defaultSoundUri)
+            .setVibrate(vibrationPattern)
+            .setDefaults(Notification.DEFAULT_ALL)
             .setAutoCancel(true)
 
         with(NotificationManagerCompat.from(requireContext())) {
@@ -210,6 +219,8 @@ class TimerFragment : Fragment() {
             val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(TIMER_CHANNEL_ID, name, importance).apply {
                 description = descriptionText
+                enableVibration(true)
+                vibrationPattern = longArrayOf(0, 500, 200, 500)
             }
             val notificationManager: NotificationManager =
                 requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

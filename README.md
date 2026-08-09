@@ -246,7 +246,7 @@ Além dos requisitos obrigatórios, o aplicativo passou por uma fase de refiname
 *   **Interface Simplificada**: A tela de configurações foi redesenhada para ser mais direta, removendo elementos de depuração e focando no que é essencial para o usuário.
 *   **Controle de Precisão**: Agora o timer permite a definição de **segundos**, além de minutos, oferecendo maior flexibilidade para atividades curtas.
 *   **Histórico Recente Automático**: O aplicativo agora memoriza e exibe na tela principal os últimos **5 tempos** utilizados, facilitando a reutilização de configurações frequentes.
-*   **Notificação de Conclusão**: O aplicativo agora envia uma notificação do sistema (Push Notification) quando o tempo chega a zero, garantindo que o usuário seja avisado mesmo que não esteja olhando para a tela.
+*   **Notificação de Conclusão**: O aplicativo agora envia uma notificação do sistema (Push Notification) com **som e vibração** quando o tempo chega a zero, garantindo que o usuário seja avisado mesmo que não esteja olhando para a tela ou o celular esteja no modo vibrar.
 *   **Persistência Aprimorada**: O histórico de sessões finalizadas continua sendo gravado no SQLite e pode ser consultado na aba de Configurações de forma limpa.
 
 ### Módulo 7
