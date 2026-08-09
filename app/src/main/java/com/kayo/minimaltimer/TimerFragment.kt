@@ -18,57 +18,63 @@ class TimerFragment : Fragment() {
 
     private var countDownTimer: CountDownTimer? = null
     private var timeLeftInMillis: Long = 1500000 // 25 minutos padrão
+    private var initialTimeSet: Long = 1500000
     private var isTimerRunning: Boolean = false
     private lateinit var dbHelper: DatabaseHelper
 
-    // Esse método liga o arquivo Kotlin ao visual XML que criamos no Passo 3
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Infla o layout do fragment
         val view = inflater.inflate(R.layout.fragment_timer, container, false)
 
         dbHelper = DatabaseHelper(requireContext())
 
-        // Mapeando os componentes necessários para os critérios do Módulo 3
         val tvTimer = view.findViewById<TextView>(R.id.tvTimer)
-        val etCustomTime = view.findViewById<EditText>(R.id.etCustomTime)
+        val etCustomMinutes = view.findViewById<EditText>(R.id.etCustomMinutes)
+        val etCustomSeconds = view.findViewById<EditText>(R.id.etCustomSeconds)
         val btnAplicarTempo = view.findViewById<Button>(R.id.btnAplicarTempo)
         val btnIniciar = view.findViewById<Button>(R.id.btnIniciar)
         val btnAjuda = view.findViewById<Button>(R.id.btnAjuda)
+        val tvRecentHistory = view.findViewById<TextView>(R.id.tvRecentHistory)
 
-        // MÓDULO 5: Recuperando tempo padrão do SharedPreferences
+        // Carrega preferências
         val sharedPrefs = requireActivity().getSharedPreferences("MinimalTimerPrefs", Context.MODE_PRIVATE)
         val defaultMinutes = sharedPrefs.getInt("default_time", 25)
         timeLeftInMillis = defaultMinutes * 60000L
+        initialTimeSet = timeLeftInMillis
         updateCountDownText(tvTimer)
+        updateRecentHistoryDisplay(tvRecentHistory)
 
-        // MÓDULO 4: Registrar o componente para o Menu de Contexto
         registerForContextMenu(tvTimer)
 
-        // MÓDULO 3: Tratamento de evento de clique e recuperação de valores
         btnAplicarTempo.setOnClickListener {
-            val textoDigitado = etCustomTime.text.toString()
+            val minText = etCustomMinutes.text.toString()
+            val secText = etCustomSeconds.text.toString()
 
-            if (textoDigitado.isNotEmpty()) {
-                val minutos = textoDigitado.toInt()
+            val minutes = if (minText.isNotEmpty()) minText.toInt() else 0
+            val seconds = if (secText.isNotEmpty()) secText.toInt() else 0
 
-                // Validação simples de segurança do tempo
-                if (minutos in 1..180) {
+            if (minutes > 0 || seconds > 0) {
+                if (minutes <= 180 && seconds < 60) {
                     pauseTimer(btnIniciar)
-                    timeLeftInMillis = minutos * 60000L
+                    timeLeftInMillis = (minutes * 60000L) + (seconds * 1000L)
+                    initialTimeSet = timeLeftInMillis
                     updateCountDownText(tvTimer)
-                    HelperMethods.showToast(requireContext(), "Tempo alterado para $minutos min")
+                    
+                    val timeString = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
+                    saveToRecentHistory(timeString)
+                    updateRecentHistoryDisplay(tvRecentHistory)
+                    
+                    HelperMethods.showToast(requireContext(), "Tempo definido: $timeString")
                 } else {
-                    HelperMethods.showToast(requireContext(), "Insira um valor entre 1 e 180 minutos")
+                    HelperMethods.showToast(requireContext(), "Use minutos (0-180) e segundos (0-59)")
                 }
             } else {
-                HelperMethods.showToast(requireContext(), "Por favor, digite os minutos!")
+                HelperMethods.showToast(requireContext(), "Informe o tempo!")
             }
         }
 
-        // MÓDULO 4: Lógica do Timer (Iniciar/Pausar)
         btnIniciar.setOnClickListener {
             if (isTimerRunning) {
                 pauseTimer(btnIniciar)
@@ -77,7 +83,6 @@ class TimerFragment : Fragment() {
             }
         }
 
-        // MÓDULO 4: Atualizado para abrir WebView de Ajuda
         btnAjuda.setOnClickListener {
             val intent = Intent(requireContext(), HelpWebViewActivity::class.java)
             startActivity(intent)
@@ -86,7 +91,31 @@ class TimerFragment : Fragment() {
         return view
     }
 
-    // MÓDULO 4: Menu de Contexto (Ações para um componente específico)
+    private fun saveToRecentHistory(timeString: String) {
+        val prefs = requireActivity().getSharedPreferences("MinimalTimerPrefs", Context.MODE_PRIVATE)
+        val history = prefs.getString("recent_history", "") ?: ""
+        val historyList = if (history.isEmpty()) mutableListOf() else history.split(",").toMutableList()
+        
+        // Remove duplicata se já existir e adiciona no topo
+        historyList.remove(timeString)
+        historyList.add(0, timeString)
+        
+        // Mantém apenas os últimos 5
+        val limitedList = if (historyList.size > 5) historyList.subList(0, 5) else historyList
+        
+        prefs.edit().putString("recent_history", limitedList.joinToString(",")).apply()
+    }
+
+    private fun updateRecentHistoryDisplay(textView: TextView) {
+        val prefs = requireActivity().getSharedPreferences("MinimalTimerPrefs", Context.MODE_PRIVATE)
+        val history = prefs.getString("recent_history", "") ?: ""
+        if (history.isNotEmpty()) {
+            textView.text = history.replace(",", "  |  ")
+        } else {
+            textView.text = "Nenhum tempo recente"
+        }
+    }
+
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
         requireActivity().menuInflater.inflate(R.menu.context_menu, menu)
@@ -100,13 +129,13 @@ class TimerFragment : Fragment() {
         return when (item.itemId) {
             R.id.ctx_reset -> {
                 pauseTimer(btnIniciar)
-                timeLeftInMillis = 1500000 // Reseta para 25 min
+                timeLeftInMillis = 1500000 // 25 min default
                 updateCountDownText(tvTimer)
                 HelperMethods.showToast(requireContext(), "Timer reiniciado")
                 true
             }
             R.id.ctx_copy -> {
-                HelperMethods.showToast(requireContext(), "Tempo copiado para área de transferência")
+                HelperMethods.showToast(requireContext(), "Tempo copiado")
                 true
             }
             else -> super.onContextItemSelected(item)
@@ -125,13 +154,10 @@ class TimerFragment : Fragment() {
                 btnIniciar.text = "Iniciar"
                 HelperMethods.showToast(requireContext(), "Tempo esgotado!")
 
-                // MÓDULO 5: Salvando sessão no Banco de Dados SQLite
-                val duration = (timeLeftInMillis / 60000).toInt() // Isso pegaria o tempo inicial se quiséssemos, mas vamos assumir o que terminou.
-                // Como timeLeftInMillis chega a 0, vamos usar um valor fixo ou o valor que foi definido.
-                // Para simplificar, vamos salvar a data da conclusão.
                 val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
                 val currentDate = sdf.format(Date())
-                dbHelper.addSession(25, currentDate) // Exemplo: salvando como 25 min por padrão
+                val durationInMin = (initialTimeSet / 60000).toInt()
+                dbHelper.addSession(durationInMin, currentDate)
             }
         }.start()
 

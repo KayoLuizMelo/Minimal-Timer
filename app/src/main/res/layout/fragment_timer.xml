@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Exigência Módulo 3: ScrollView para proteger a tela contra o teclado -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,7 +11,6 @@
         android:gravity="center"
         android:padding="24dp">
 
-        <!-- O número do Timer original com o estilo que você escolheu -->
         <TextView
             android:id="@+id/tvTimer"
             android:layout_width="wrap_content"
@@ -23,30 +21,53 @@
             android:textSize="80sp"
             android:textStyle="bold" />
 
-        <!-- Exigência Módulo 3: EditText customizado para manter a paleta escura -->
-        <EditText
-            android:id="@+id/etCustomTime"
-            android:layout_width="200dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Minutos (ex: 15)"
-            android:textColorHint="#888888"
-            android:textColor="@color/white"
-            android:inputType="number"
-            android:textAlignment="center"
-            android:backgroundTint="@color/white" />
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
 
-        <!-- Exigência Módulo 3: Botão para resgatar o valor digitado -->
+            <EditText
+                android:id="@+id/etCustomMinutes"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:hint="Min"
+                android:textColorHint="#888888"
+                android:textColor="@color/white"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:backgroundTint="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:paddingHorizontal="8dp"/>
+
+            <EditText
+                android:id="@+id/etCustomSeconds"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:hint="Seg"
+                android:textColorHint="#888888"
+                android:textColor="@color/white"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:backgroundTint="@color/white" />
+        </LinearLayout>
+
         <Button
             android:id="@+id/btnAplicarTempo"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="16dp"
             android:backgroundTint="#444444"
             android:textColor="@color/white"
             android:text="Definir Tempo" />
 
-        <!-- Seu botão original de ação -->
         <Button
             android:id="@+id/btnIniciar"
             android:layout_width="200dp"
@@ -56,7 +77,24 @@
             android:textColor="#000000"
             android:text="Iniciar" />
 
-        <!-- Seu botão original de Ajuda -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Últimos tempos utilizados:"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tvRecentHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:textColor="#AAAAAA"
+            android:textSize="12sp"
+            android:layout_marginBottom="24dp"
+            android:textAlignment="center"/>
+
         <Button
             android:id="@+id/btnAjuda"
             android:layout_width="wrap_content"

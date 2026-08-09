@@ -240,6 +240,14 @@ Nesta etapa, o Minimal Timer expandiu suas capacidades de interação, permitind
 *   **Envio de E-mail**: Integração com aplicativos de e-mail do dispositivo através de `Intent.ACTION_SENDTO`, facilitando o suporte e feedback do usuário.
 *   **Segurança e Permissões**: Gerenciamento de permissões críticas (`SEND_SMS`, `RECEIVE_SMS`, `POST_NOTIFICATIONS`) seguindo as boas práticas do Android moderno.
 
+### Melhorias de Usabilidade e Layout (Pós-Módulo 6)
+Além dos requisitos obrigatórios, o aplicativo passou por uma fase de refinamento para melhorar a experiência do usuário:
+
+*   **Interface Simplificada**: A tela de configurações foi redesenhada para ser mais direta, removendo elementos de depuração e focando no que é essencial para o usuário.
+*   **Controle de Precisão**: Agora o timer permite a definição de **segundos**, além de minutos, oferecendo maior flexibilidade para atividades curtas.
+*   **Histórico Recente Automático**: O aplicativo agora memoriza e exibe na tela principal os últimos **5 tempos** utilizados, facilitando a reutilização de configurações frequentes.
+*   **Persistência Aprimorada**: O histórico de sessões finalizadas continua sendo gravado no SQLite e pode ser consultado na aba de Configurações de forma limpa.
+
 ### Módulo 7
 - Testes
 

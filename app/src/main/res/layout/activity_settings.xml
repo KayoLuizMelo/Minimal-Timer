@@ -13,23 +13,23 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MÓDULO 5: Configurações e Persistência"
-            android:textSize="20sp"
+            android:text="Configurações"
+            android:textSize="24sp"
             android:textStyle="bold"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="24dp"/>
 
         <TextView
             android:id="@+id/tvDadosRecebidos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Aguardando dados..."
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="24dp" />
 
         <!-- SharedPreferences Section -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Preferências (SharedPreferences)"
+            android:text="Preferências"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"/>
 
@@ -45,47 +45,14 @@
             android:id="@+id/btnSavePrefs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Salvar Preferências"
-            android:layout_marginBottom="16dp"/>
+            android:text="Salvar Tempo Padrão"
+            android:layout_marginBottom="24dp"/>
 
-        <!-- Internal/External Storage Section -->
+        <!-- History Section -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Arquivos (Interno/Externo)"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
-
-        <Button
-            android:id="@+id/btnSaveInternal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Gravar Log Interno (FileOutputStream)"/>
-
-        <Button
-            android:id="@+id/btnReadInternal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ler Log Interno (FileInputStream)"/>
-
-        <Button
-            android:id="@+id/btnSaveExternal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Gravar Backup Externo (External)"/>
-
-        <Button
-            android:id="@+id/btnReadRaw"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ler Recurso Raw (openRawResource)"
-            android:layout_marginBottom="16dp"/>
-
-        <!-- SQLite Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Banco de Dados (SQLite)"
+            android:text="Histórico de Sessões (SQLite)"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"/>
 
@@ -93,15 +60,15 @@
             android:id="@+id/btnViewHistory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ver Histórico de Sessões"
+            android:text="Atualizar Histórico"
             android:layout_marginBottom="8dp"/>
 
         <TextView
             android:id="@+id/tvHistoryDisplay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Histórico aparecerá aqui..."
-            android:padding="8dp"
+            android:text="O histórico de sessões finalizadas aparecerá aqui."
+            android:padding="12dp"
             android:background="#f0f0f0" />
 
     </LinearLayout>
