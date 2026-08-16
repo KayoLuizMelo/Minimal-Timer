@@ -13,18 +13,6 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <!-- MÓDULO 7: Exibição de Quote consumido via JSON/HTTP -->
-    <TextView
-        android:id="@+id/tvQuote"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Carregando frase do dia..."
-        android:textAlignment="center"
-        android:textStyle="italic"
-        android:textColor="#AAAAAA"
-        android:textSize="12sp" />
-
     <!-- Botão simples para abrir as configurações -->
     <Button
         android:id="@+id/btnSettings"

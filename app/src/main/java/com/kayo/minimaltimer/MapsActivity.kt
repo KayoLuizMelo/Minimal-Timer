@@ -5,8 +5,8 @@ import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
-import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -18,6 +18,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.kayo.minimaltimer.utils.HelperMethods
 import java.util.*
 
@@ -37,7 +38,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         tvLocationInfo = findViewById(R.id.tvLocationInfo)
         etSearch = findViewById(R.id.etSearch)
-        val btnSearch = findViewById<Button>(R.id.btnSearch)
+        val btnSearch = findViewById<ImageButton>(R.id.btnSearch)
+        val fabMyLocation = findViewById<FloatingActionButton>(R.id.fabMyLocation)
+        val fabMapType = findViewById<FloatingActionButton>(R.id.fabMapType)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -48,6 +51,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             val location = etSearch.text.toString()
             if (location.isNotEmpty()) {
                 searchLocation(location)
+            }
+        }
+
+        fabMyLocation.setOnClickListener {
+            getCurrentLocation()
+        }
+
+        fabMapType.setOnClickListener {
+            if (::mMap.isInitialized) {
+                mMap.mapType = if (mMap.mapType == GoogleMap.MAP_TYPE_NORMAL) {
+                    GoogleMap.MAP_TYPE_SATELLITE
+                } else {
+                    GoogleMap.MAP_TYPE_NORMAL
+                }
             }
         }
     }
