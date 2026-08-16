@@ -17,19 +17,69 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val COLUMN_ID = "id"
         const val COLUMN_DURATION = "duration"
         const val COLUMN_DATE = "date"
+
+        // MÓDULO 7: Tabela para Timers Baseados em Localização
+        const val TABLE_LOCATION_TIMERS = "location_timers"
+        const val COLUMN_LAT = "lat"
+        const val COLUMN_LNG = "lng"
+        const val COLUMN_ADDRESS = "address"
+        const val COLUMN_TIMER_MIN = "timer_min"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        val createTable = ("CREATE TABLE " + TABLE_HISTORY + "("
+        val createHistoryTable = ("CREATE TABLE " + TABLE_HISTORY + "("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUMN_DURATION + " INTEGER,"
                 + COLUMN_DATE + " TEXT" + ")")
-        db?.execSQL(createTable)
+        db?.execSQL(createHistoryTable)
+
+        val createLocationTimersTable = ("CREATE TABLE " + TABLE_LOCATION_TIMERS + "("
+                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_LAT + " REAL,"
+                + COLUMN_LNG + " REAL,"
+                + COLUMN_ADDRESS + " TEXT,"
+                + COLUMN_TIMER_MIN + " INTEGER" + ")")
+        db?.execSQL(createLocationTimersTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db?.execSQL("DROP TABLE IF EXISTS $TABLE_HISTORY")
+        db?.execSQL("DROP TABLE IF EXISTS $TABLE_LOCATION_TIMERS")
         onCreate(db)
+    }
+
+    /**
+     * MÓDULO 7: Adiciona ou atualiza um timer para uma localização específica.
+     */
+    fun saveLocationTimer(lat: Double, lng: Double, address: String, minutes: Int): Long {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(COLUMN_LAT, lat)
+        values.put(COLUMN_LNG, lng)
+        values.put(COLUMN_ADDRESS, address)
+        values.put(COLUMN_TIMER_MIN, minutes)
+        
+        // Tenta encontrar se já existe um timer próximo a esse local
+        val result = db.insertWithOnConflict(TABLE_LOCATION_TIMERS, null, values, SQLiteDatabase.CONFLICT_REPLACE)
+        db.close()
+        return result
+    }
+
+    /**
+     * Busca o timer salvo para uma coordenada.
+     */
+    fun getLocationTimer(lat: Double, lng: Double): Int? {
+        val db = this.readableDatabase
+        // Procura em um raio pequeno (aproximadamente 100m)
+        val cursor = db.rawQuery("SELECT $COLUMN_TIMER_MIN FROM $TABLE_LOCATION_TIMERS WHERE ABS($COLUMN_LAT - ?) < 0.001 AND ABS($COLUMN_LNG - ?) < 0.001", arrayOf(lat.toString(), lng.toString()))
+        
+        var minutes: Int? = null
+        if (cursor.moveToFirst()) {
+            minutes = cursor.getInt(0)
+        }
+        cursor.close()
+        db.close()
+        return minutes
     }
 
     /**

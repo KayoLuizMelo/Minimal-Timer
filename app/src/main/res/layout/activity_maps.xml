@@ -66,18 +66,52 @@
         app:backgroundTint="@color/white"
         android:contentDescription="Tipo de Mapa" />
 
-    <TextView
+    <LinearLayout
         android:id="@+id/tvLocationInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#DDFFFFFF"
+        android:orientation="vertical"
         android:padding="16dp"
-        android:text="Toque no mapa para ver o endereço"
-        android:textColor="#333333"
-        android:textStyle="bold"
         android:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Toque no mapa para ver o endereço"
+            android:textColor="#333333"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <LinearLayout
+            android:id="@+id/timerSaveContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <EditText
+                android:id="@+id/etLocationTimer"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:hint="Minutos"
+                android:inputType="number"
+                android:textSize="14sp"/>
+
+            <Button
+                android:id="@+id/btnSaveLocationTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salvar Timer"
+                android:layout_marginStart="8dp"
+                style="@style/Widget.MaterialComponents.Button.TextButton"/>
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

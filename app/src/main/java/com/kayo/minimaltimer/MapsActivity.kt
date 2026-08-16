@@ -5,8 +5,10 @@ import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -16,9 +18,11 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.kayo.minimaltimer.database.DatabaseHelper
 import com.kayo.minimaltimer.utils.HelperMethods
 import java.util.*
 
@@ -29,15 +33,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var tvLocationInfo: TextView
+    private lateinit var tvAddress: TextView
     private lateinit var etSearch: EditText
+    private lateinit var dbHelper: DatabaseHelper
+    private lateinit var timerSaveContainer: LinearLayout
+    private lateinit var etLocationTimer: EditText
+    private var selectedLatLng: LatLng? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
 
-        tvLocationInfo = findViewById(R.id.tvLocationInfo)
+        dbHelper = DatabaseHelper(this)
+        tvAddress = findViewById(R.id.tvAddress)
         etSearch = findViewById(R.id.etSearch)
+        timerSaveContainer = findViewById(R.id.timerSaveContainer)
+        etLocationTimer = findViewById(R.id.etLocationTimer)
+        val btnSaveLocationTimer = findViewById<View>(R.id.btnSaveLocationTimer)
         val btnSearch = findViewById<ImageButton>(R.id.btnSearch)
         val fabMyLocation = findViewById<FloatingActionButton>(R.id.fabMyLocation)
         val fabMapType = findViewById<FloatingActionButton>(R.id.fabMapType)
@@ -51,6 +63,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             val location = etSearch.text.toString()
             if (location.isNotEmpty()) {
                 searchLocation(location)
+            }
+        }
+
+        btnSaveLocationTimer.setOnClickListener {
+            val minutes = etLocationTimer.text.toString().toIntOrNull()
+            if (minutes != null && selectedLatLng != null) {
+                dbHelper.saveLocationTimer(selectedLatLng!!.latitude, selectedLatLng!!.longitude, tvAddress.text.toString(), minutes)
+                HelperMethods.showToast(this, "Timer de $minutes min salvo para este local!")
+                mMap.addMarker(MarkerOptions()
+                    .position(selectedLatLng!!)
+                    .title("Timer: $minutes min")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
+            } else {
+                HelperMethods.showToast(this, "Informe os minutos!")
             }
         }
 
@@ -82,10 +108,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Interação: Toque no mapa (Geocodificação Reversa)
         mMap.setOnMapClickListener { latLng ->
+            selectedLatLng = latLng
             mMap.clear()
             mMap.addMarker(MarkerOptions().position(latLng).title("Local Selecionado"))
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng))
             reverseGeocode(latLng)
+            
+            // Verifica se já existe um timer salvo
+            val savedMin = dbHelper.getLocationTimer(latLng.latitude, latLng.longitude)
+            if (savedMin != null) {
+                etLocationTimer.setText(savedMin.toString())
+                HelperMethods.showToast(this, "Timer existente: $savedMin min")
+            } else {
+                etLocationTimer.setText("")
+            }
+            timerSaveContainer.visibility = View.VISIBLE
         }
     }
 
@@ -111,10 +148,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             if (!addressList.isNullOrEmpty()) {
                 val address = addressList[0]
                 val latLng = LatLng(address.latitude, address.longitude)
+                selectedLatLng = latLng
                 mMap.clear()
                 mMap.addMarker(MarkerOptions().position(latLng).title(locationName))
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-                tvLocationInfo.text = "Endereço: ${address.getAddressLine(0)}"
+                tvAddress.text = "Endereço: ${address.getAddressLine(0)}"
+                timerSaveContainer.visibility = View.VISIBLE
             } else {
                 HelperMethods.showToast(this, "Local não encontrado")
             }
@@ -130,7 +169,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             val addressList: List<Address>? = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
             if (!addressList.isNullOrEmpty()) {
                 val address = addressList[0].getAddressLine(0)
-                tvLocationInfo.text = "Endereço: $address"
+                tvAddress.text = "Endereço: $address"
             }
         } catch (e: Exception) {
             e.printStackTrace()
