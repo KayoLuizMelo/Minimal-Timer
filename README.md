@@ -250,7 +250,18 @@ Além dos requisitos obrigatórios, o aplicativo passou por uma fase de refiname
 *   **Persistência Aprimorada**: O histórico de sessões finalizadas continua sendo gravado no SQLite e pode ser consultado na aba de Configurações de forma limpa.
 
 ### Módulo 7
-- Testes
+Nesta etapa, o Minimal Timer integrou-se com serviços geográficos e web, expandindo suas funcionalidades para o mundo real:
+
+*   **Google Maps SDK**: Integração completa com mapas, permitindo a visualização e navegação geográfica dentro do aplicativo.
+*   **Geolocalização**: Uso de `FusedLocationProviderClient` para obter a localização atual do usuário e monitorar mudanças de posição.
+*   **Geocodificação Direta e Reversa**:
+    *   Transformação de coordenadas em endereços (ao tocar no mapa).
+    *   Busca de locais por nome/endereço com foco automático no mapa.
+*   **Serviços Web (HTTP/JSON)**:
+    *   Conexão com a internet utilizando **OkHttp**.
+    *   Consumo de API externa para exibição de frases motivacionais (ZenQuotes).
+    *   Processamento de dados em formato **JSON** utilizando a biblioteca **Gson**.
+*   **Permissões Dinâmicas**: Gerenciamento de permissões de localização (`FINE_LOCATION`) e internet.
 
 ### Módulo 8
 - Projeto final

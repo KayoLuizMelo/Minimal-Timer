@@ -6,7 +6,9 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.kayo.minimaltimer.utils.ProductivityService
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,6 +19,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Log.d(TAG_CICLO, "onCreate: A tela está sendo criada na memória.")
+
+        val tvQuote = findViewById<TextView>(R.id.tvQuote)
+
+        // MÓDULO 7: Consumindo API externa (JSON/HTTP)
+        ProductivityService.fetchRandomQuote(object : ProductivityService.QuoteCallback {
+            override fun onSuccess(quote: String, author: String) {
+                runOnUiThread {
+                    tvQuote.text = "\"$quote\" - $author"
+                }
+            }
+
+            override fun onFailure(error: String) {
+                runOnUiThread {
+                    tvQuote.text = "Foco e Produtividade!"
+                }
+            }
+        })
 
         // 1. Colocando o Fragment do Timer dentro do espaço vazio da tela
         if (savedInstanceState == null) {
@@ -92,6 +111,11 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.menu_contact -> {
                 val intent = Intent(this, ContactActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_maps -> {
+                val intent = Intent(this, MapsActivity::class.java)
                 startActivity(intent)
                 true
             }
