@@ -19,7 +19,9 @@
         android:orientation="horizontal"
         android:padding="8dp"
         android:background="#80FFFFFF"
-        app:layout_topToTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <EditText
             android:id="@+id/etSearch"
@@ -44,6 +46,8 @@
         android:padding="16dp"
         android:text="Toque no mapa para ver o endereço"
         android:textColor="@color/white"
-        app:layout_bottomToBottomof="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
