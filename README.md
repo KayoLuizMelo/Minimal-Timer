@@ -257,9 +257,6 @@ Nesta etapa, o Minimal Timer integrou-se com serviços geográficos e web, expan
 *   **Geocodificação Direta e Reversa**:
     *   Transformação de coordenadas em endereços (ao tocar no mapa).
     *   Busca de locais por nome/endereço com foco automático no mapa.
-*   **Timers Baseados em Localização**:
-    *   Capacidade de salvar um tempo específico para um endereço (ex: 50 min na Biblioteca, 25 min em Casa).
-    *   **Ativação Automática**: Ao abrir o timer, o app verifica a localização atual e sugere/aplica o tempo configurado para aquele local.
 *   **Serviços Web (HTTP/JSON)**:
     *   Conexão com a internet utilizando **OkHttp**.
     *   Consumo de API externa para exibição de frases motivacionais (ZenQuotes).

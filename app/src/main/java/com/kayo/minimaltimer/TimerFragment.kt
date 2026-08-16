@@ -16,7 +16,6 @@ import android.widget.TextView
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
-import com.google.android.gms.location.LocationServices
 import com.kayo.minimaltimer.database.DatabaseHelper
 import com.kayo.minimaltimer.utils.HelperMethods
 import java.text.SimpleDateFormat
@@ -54,9 +53,6 @@ class TimerFragment : Fragment() {
         initialTimeSet = timeLeftInMillis
         updateCountDownText(tvTimer)
         updateRecentHistoryDisplay(tvRecentHistory)
-        
-        // MÓDULO 7: Verificação automática de Timer por Localização
-        checkLocationTimer(tvTimer, btnIniciar)
 
         registerForContextMenu(tvTimer)
 
@@ -235,27 +231,5 @@ class TimerFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         countDownTimer?.cancel()
-    }
-
-    /**
-     * MÓDULO 7: Verifica se há um timer salvo para a localização atual do dispositivo.
-     */
-    private fun checkLocationTimer(tvTimer: TextView, btnIniciar: Button) {
-        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        try {
-            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                if (location != null) {
-                    val savedMin = dbHelper.getLocationTimer(location.latitude, location.longitude)
-                    if (savedMin != null) {
-                        pauseTimer(btnIniciar)
-                        timeLeftInMillis = savedMin * 60000L
-                        updateCountDownText(tvTimer)
-                        HelperMethods.showToast(requireContext(), "📍 Timer de $savedMin min ativado por localização!")
-                    }
-                }
-            }
-        } catch (e: SecurityException) {
-            // Ignora se não houver permissão
-        }
     }
 }
