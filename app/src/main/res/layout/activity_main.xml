@@ -13,13 +13,30 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <!-- Botão simples para abrir as configurações -->
-    <Button
-        android:id="@+id/btnSettings"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="⚙ Configurações"
-        android:backgroundTint="#333333"
-        android:textColor="#FFFFFF" />
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <!-- Botão para abrir o Mapa de Foco -->
+        <Button
+            android:id="@+id/btnMaps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📍 Mapa de Foco"
+            android:backgroundTint="#444444"
+            android:textColor="#FFFFFF"
+            android:layout_marginEnd="8dp"/>
+
+        <!-- Botão simples para abrir as configurações -->
+        <Button
+            android:id="@+id/btnSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⚙ Configurações"
+            android:backgroundTint="#333333"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
 
 </LinearLayout>

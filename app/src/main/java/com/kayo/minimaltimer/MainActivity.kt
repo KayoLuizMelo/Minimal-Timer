@@ -37,6 +37,13 @@ class MainActivity : AppCompatActivity() {
             // Inicia a nova tela
             startActivity(intencao)
         }
+
+        // 3. Configurando o botão para abrir o Mapa de Foco
+        val btnMaps = findViewById<Button>(R.id.btnMaps)
+        btnMaps.setOnClickListener {
+            val intent = Intent(this, MapsActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     // --- Monitoramento do Ciclo de Vida exigido pela faculdade ---
